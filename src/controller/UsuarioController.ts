@@ -91,7 +91,7 @@ export class UsuarioController extends Usuario {
     static async remover(req: Request, res: Response): Promise<any> {
         try {
             // recuperando o id do Aluno que será removido
-            const idUsuario = parseInt(req.params.idUsuario as string);
+            const idUsuario = parseInt(req.params.idUsuario);
 
             // chamando a função de remoção de Aluno
             const respostaModelo = await Usuario.removerUsuario(idUsuario);

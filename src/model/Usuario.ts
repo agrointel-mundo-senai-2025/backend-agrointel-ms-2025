@@ -142,7 +142,7 @@ export class Usuario {
 
         try {
             // query de consulta ao banco de dados
-            const querySelectUsuario = `SELECT * FROM usuario;`;
+            const querySelectUsuario = `SELECT * FROM usuario WHERE status_usuario = TRUE;`;
 
             // fazendo a consulta e guardando a resposta
             const respostaBD = await database.query(querySelectUsuario);
@@ -232,7 +232,7 @@ export class Usuario {
         try {
             // Cria a consulta (query) para remover o aluno
             const queryDeleteIaUsuario = `UPDATE ia
-                                            SET status_usuario = FALSE
+                                            SET status_ia = FALSE
                                             WHERE id_usuario=${id_usuario};`;
 
             // remove os emprestimos associado ao aluno
@@ -240,7 +240,7 @@ export class Usuario {
 
             // Construção da query SQL para deletar o Aluno.
             const queryDeleteUsuario = `UPDATE usuario 
-                                            SET status_usario = FALSE
+                                            SET status_usuario = FALSE
                                             WHERE id_usuario =${id_usuario};`;
 
             // Executa a query de exclusão e verifica se a operação foi bem-sucedida.

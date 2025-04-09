@@ -2,7 +2,6 @@
 DROP TABLE IF EXISTS ia;
 DROP TABLE IF EXISTS usuario;
 
--- Criação da tabela de usuários
 CREATE TABLE usuario (
     id_usuario SERIAL PRIMARY KEY,
     nome VARCHAR(100),
@@ -17,7 +16,8 @@ CREATE TABLE ia (
     id_usuario INT NOT NULL,
     pergunta TEXT,
     resposta TEXT,
-    FOREIGN KEY (id_usuario) REFERENCES usuario(id_usuario)
+    FOREIGN KEY (id_usuario) REFERENCES usuario(id_usuario),
+	status_ia BOOLEAN DEFAULT TRUE
 );
 
 -- Inserção de 10 usuários
