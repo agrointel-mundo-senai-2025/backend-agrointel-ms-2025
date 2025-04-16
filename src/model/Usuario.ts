@@ -1,197 +1,150 @@
 import { DatabaseModel } from "./DatabaseModel";
 
-// armazenei o pool de conexões
+// Cria uma instância da classe DatabaseModel e pega o pool de conexões com o banco
 const database = new DatabaseModel().pool;
 
 /**
- * Classe que representa um Aluno.
+ * Classe que representa um Usuario
  */
 export class Usuario {
 
     /* Atributos */
-    /* Identificador do aluno */
+
+    // Identificador do usuário (inicialmente 0)
     private idUsuario: number = 0;
-    /* ra do aluno */
+
+    // Nome do usuário
     private nome: string;
-    /* nome do aluno */
+
+    // Email do usuário
     private email: string;
-    /* sobrenome do carro */
+
+    // Celular do usuário
     private celular: string;
-    /* data de nascimento do aluno */
+
+    // Status do usuário (true = ativo, false = inativo)
     private statusUsuario: boolean = true ;
 
-
     /**
-     * Construtor da classe Aluno
+     * Construtor da classe Usuario
      * 
-     * @param nome Nome do Aluno
-     * @param email Sobrenome do Aluno
-     * @param celular Data de Nascimento do Aluno
+     * @param nome Nome do usuário
+     * @param email Email do usuário
+     * @param celular Celular do usuário
      */
-
     constructor(
         nome: string,
         email: string,
         celular: string
     ) {
+        // Atribui os valores passados para os atributos
         this.nome = nome;
         this.email = email;
         this.celular = celular;
     }
 
     /* Métodos get e set */
-    /**
-     * Recupera o identificador do aluno
-     * @returns o identificador do aluno
-     */
+
+    // Retorna o ID do usuário
     public getIdUsuario(): number {
         return this.idUsuario;
     }
 
-    /**
-     * Atribui um valor ao identificador do aluno
-     * @param idUsuario novo identificador do aluno
-     */
+    // Define um novo ID para o usuário
     public setIdUsuario(idUsuario: number): void {
         this.idUsuario = idUsuario;
     }
 
-    /**
-         * Recupera o RA do aluno
-         * @returns o RA do aluno
-         */
+    // Retorna o nome do usuário
     public getNome(): string {
         return this.nome;
     }
 
-    /**
-     * Atribui um valor ao RA do aluno
-     * @param ra novo RA do aluno
-     */
+    // Define um novo nome para o usuário
     public setNome(nome: string): void {
         this.nome = nome
     }
 
-    /**
-     * Retorna o nome do Aluno.
-     *
-     * @returns {string} O nome do aluno.
-     */
+    // Retorna o email do usuário
     public getEmail(): string {
         return this.email;
     }
 
-    /**
-     * Define o nome do aluno.
-     * 
-     * @param email - Nome do aluno a ser definido.
-     */
+    // Define um novo email para o usuário
     public setEmail(email: string): void {
         this.email = email;
     }
 
-    /**
-     * Retorna o sobrenome do aluno.
-     *
-     * @returns {string} O sobrenome do aluno.
-     */
+    // Retorna o celular do usuário
     public getCelular(): string {
         return this.celular;
     }
 
-    /**
-     * Define o sobrenome do aluno.
-     *
-     * @param sobrenome - O sobrenome do aluno.
-     */
+    // Define um novo celular para o usuário
     public setCelular(celular: string): void {
         this.celular = celular;
     }
 
-    /**
-     * Retorna o sobrenome do aluno.
-     *
-     * @returns {string} O sobrenome do aluno.
-     */
+    // Retorna o status do usuário (ativo ou inativo)
     public getStatusUsuario(): boolean {
         return this.statusUsuario;
     }
 
-    /**
-     * Define o sobrenome do aluno.
-     *
-     * @param statusUsuario - O sobrenome do aluno.
-     */
+    // Define o status do usuário
     public setStatusUsuario(statusUsuario: boolean): void {
         this.statusUsuario = statusUsuario;
     }
 
-
     /**
-     * Busca e retorna uma lista de carros do banco de dados.
-     * @returns Um array de objetos do tipo `Aluno` em caso de sucesso ou `null` se ocorrer um erro durante a consulta.
+     * Lista todos os usuários ativos do banco de dados.
      * 
-     * - A função realiza uma consulta SQL para obter todas as informações da tabela "aluno".
-     * - Os dados retornados do banco de dados são usados para instanciar objetos da classe ``.
-     * - Cada carro é adicionado a uma lista que será retornada ao final da execução.
-     * - Se houver falha na consulta ao banco, a função captura o erro, exibe uma mensagem no console e retorna `null`.
+     * @returns Lista de objetos Usuario ou null se der erro.
      */
     static async listagemUsuario(): Promise<Array<Usuario> | null> {
-        // objeto para armazenar a lista de alunos
+        // Cria uma lista para armazenar os usuários
         const listaDeUsuarios: Array<Usuario> = [];
 
         try {
-            // query de consulta ao banco de dados
+            // Monta a query que busca todos os usuários ativos
             const querySelectUsuario = `SELECT * FROM usuario WHERE status_usuario = TRUE;`;
 
-            // fazendo a consulta e guardando a resposta
+            // Executa a query e pega o resultado
             const respostaBD = await database.query(querySelectUsuario);
 
-            // usando a resposta para instanciar um objeto do tipo aluno
+            // Para cada linha do resultado, cria um novo objeto Usuario
             respostaBD.rows.forEach((linha: any) => {
-                // instancia (cria) objeto aluno
                 const novoUsuario = new Usuario(
                     linha.nome,
                     linha.email,
                     linha.celular
                 );
 
-                // atribui o ID objeto
+                // Define o ID e status no objeto
                 novoUsuario.setIdUsuario(linha.id_usuario);
-
                 novoUsuario.setStatusUsuario(linha.status_usuario);
 
-                // adiciona o objeto na lista
+                // Adiciona o objeto à lista
                 listaDeUsuarios.push(novoUsuario);
             });
 
-            // retorna a lista de carros
+            // Retorna a lista completa
             return listaDeUsuarios;
         } catch (error) {
+            // Em caso de erro, mostra no console e retorna null
             console.log('Erro ao buscar lista de usuarios');
             return null;
         }
     }
 
     /**
-     * Realiza o cadastro de um carro no banco de dados.
+     * Cadastra um novo usuário no banco de dados.
      * 
-     * Esta função recebe um objeto do tipo `Aluno` e insere seus dados (nome, sobrenome, dataNascimento, endereço, email e telefone)
-     * na tabela `Aluno` do banco de dados. O método retorna um valor booleano indicando se o cadastro 
-     * foi realizado com sucesso.
-     * 
-     * @param {Usuario} usuario - Objeto contendo os dados do carro que será cadastrado. O objeto `Aluno`
-     *                        deve conter os métodos `getNome()`, `getSobrenome()`, `getDataNascimento()`, `getEmail()` e `getCelular()`
-     *                        que retornam os respectivos valores do aluno.
-     * @returns {Promise<boolean>} - Retorna `true` se o aluno foi cadastrado com sucesso e `false` caso contrário.
-     *                               Em caso de erro durante o processo, a função trata o erro e retorna `false`.
-     * 
-     * @throws {Error} - Se ocorrer algum erro durante a execução do cadastro, uma mensagem de erro é exibida
-     *                   no console junto com os detalhes do erro.
+     * @param usuario Objeto Usuario com os dados a serem salvos
+     * @returns true se cadastrou com sucesso, false se deu ruim
      */
     static async cadastroUsuario(usuario: Usuario): Promise<boolean> {
         try {
-            // query para fazer insert de um aluno no banco de dados
+            // Monta a query de insert com os dados do objeto
             const queryInsertUsuario = `INSERT INTO usuario (nome, email, celular)
                                         VALUES
                                         ('${usuario.getNome()}', 
@@ -199,100 +152,102 @@ export class Usuario {
                                         '${usuario.getCelular()}')
                                         RETURNING id_usuario;`;
 
+            // Mostra a query no console (debug)
             console.log(queryInsertUsuario);
 
-            // executa a query no banco e armazena a resposta
+            // Executa a query
             const respostaBD = await database.query(queryInsertUsuario);
 
-            // verifica se a quantidade de linhas modificadas é diferente de 0
+            // Se conseguiu inserir, rowCount vai ser diferente de 0
             if (respostaBD.rowCount != 0) {
                 console.log(`Aluno cadastrado com sucesso! ID do usuario: ${respostaBD.rows[0].id_usuario}`);
-                // true significa que o cadastro foi feito
                 return true;
             }
-            // false significa que o cadastro NÃO foi feito.
+
+            // Se não inseriu nada, retorna false
             return false;
 
-            // tratando o erro
         } catch (error) {
-            // imprime outra mensagem junto com o erro
+            // Se der erro, mostra a mensagem no console
             console.log('Erro ao cadastrar o usuario. Verifique os logs para mais detalhes.');
-            // imprime o erro no console
             console.log(error);
-            // retorno um valor falso
             return false;
         }
     }
 
-
+    /**
+     * Desativa o usuário e também registros relacionados na tabela 'ia'
+     * 
+     * @param id_usuario ID do usuário a ser removido (soft delete)
+     * @returns true se deu certo, false se não
+     */
     static async removerUsuario(id_usuario: number): Promise<boolean> {
 
         let queryResult = false;
 
         try {
-            // Cria a consulta (query) para remover o aluno
+            // Desativa os registros da tabela ia relacionados ao usuário
             const queryDeleteIaUsuario = `UPDATE ia
                                             SET status_ia = FALSE
                                             WHERE id_usuario=${id_usuario};`;
 
-            // remove os emprestimos associado ao aluno
+            // Executa a query
             await database.query(queryDeleteIaUsuario);
 
-            // Construção da query SQL para deletar o Aluno.
+            // Desativa o próprio usuário (soft delete)
             const queryDeleteUsuario = `UPDATE usuario 
                                             SET status_usuario = FALSE
                                             WHERE id_usuario =${id_usuario};`;
 
-            // Executa a query de exclusão e verifica se a operação foi bem-sucedida.
+            // Executa a segunda query e verifica se deu certo
             await database.query(queryDeleteUsuario)
                 .then((result) => {
                     if (result.rowCount != 0) {
-                        queryResult = true; // Se a operação foi bem-sucedida, define queryResult como true.
+                        queryResult = true;
                     }
                 });
 
-            // retorna o resultado da query
             return queryResult;
 
-            // captura qualquer erro que aconteça
         } catch (error) {
-            // Em caso de erro na consulta, exibe o erro no console e retorna false.
+            // Em caso de erro, loga e retorna false
             console.log(`Erro na consulta: ${error}`);
-            // retorna false
             return queryResult;
         }
     }
 
+    /**
+     * Atualiza os dados de um usuário no banco.
+     * 
+     * @param usuario Objeto com os novos dados
+     * @returns true se atualizou, false se deu ruim
+     */
     static async atualizarUsuario(usuario: Usuario): Promise<boolean> {
         try {
-            // query para fazer update de um aluno no banco de dados
+            // Monta a query de update com os dados atuais do objeto
             const queryUpdateUsuario = `UPDATE usuario
                                     SET nome = '${usuario.getNome()}', 
                                         email = '${usuario.getEmail()}',
                                         celular = '${usuario.getCelular()}'
                                     WHERE id_usuario = ${usuario.getIdUsuario()};`;
 
-            // executa a query no banco e armazena a resposta
+            // Executa a query
             const respostaBD = await database.query(queryUpdateUsuario);
 
-            // verifica se a quantidade de linhas modificadas é diferente de 0
+            // Se atualizou alguma linha, deu certo
             if (respostaBD.rowCount != 0) {
                 console.log(`Aluno atualizado com sucesso! ID do usuario: ${usuario.getIdUsuario()}`);
-                // true significa que a atualização foi bem sucedida
                 return true;
             }
-            // false significa que a atualização NÃO foi bem sucedida.
+
+            // Se não atualizou nada, retorna false
             return false;
 
-            // tratando o erro
         } catch (error) {
-            // imprime outra mensagem junto com o erro
+            // Loga erro e retorna false
             console.log('Erro ao atualizar o usuario. Verifique os logs para mais detalhes.');
-            // imprime o erro no console
             console.log(error);
-            // retorno um valor falso
             return false;
         }
     }
 }
-

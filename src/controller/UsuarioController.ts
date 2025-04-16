@@ -1,6 +1,7 @@
-import { Request, Response } from "express";
-import  {Usuario}  from "../model/Usuario";
+import { Request, Response } from "express"; // Importa os tipos do Express para tratar requisições e respostas HTTP
+import  {Usuario}  from "../model/Usuario"; // Importa a classe Usuario do model
 
+// Interface que define a estrutura esperada dos dados de um usuário na requisição
 interface UsuarioDTO {
     nome: string,
     email: string,
@@ -8,142 +9,137 @@ interface UsuarioDTO {
 }
 
 /**
- * A classe `AlunoController` estende a classe `Aluno` e é responsável por controlar as requisições relacionadas aos alunos.
- * 
- * - Esta classe atua como um controlador dentro de uma API REST, gerenciando as operações relacionadas ao recurso "aluno".
- * - Herdando de `Aluno`, ela pode acessar métodos e propriedades da classe base.
+ * Classe controladora que lida com as requisições HTTP relacionadas aos usuários.
+ * Ela herda da classe Usuario, então pode usar seus métodos diretamente.
  */
 export class UsuarioController extends Usuario {
+
     /**
-    * Lista todos os alunos.
-    * @param req Objeto de requisição HTTP.
-    * @param res Objeto de resposta HTTP.
-    * @returns Lista de alunos em formato JSON com status 200 em caso de sucesso.
-    * @throws Retorna um status 400 com uma mensagem de erro caso ocorra uma falha ao acessar a listagem de alunos.
+    * Lista todos os usuários cadastrados e ativos.
+    * @param req Objeto da requisição HTTP.
+    * @param res Objeto da resposta HTTP.
+    * @returns Lista de usuários em formato JSON com status 200 ou erro 400 se falhar.
     */
     static async todos(req: Request, res: Response): Promise<any> {
         try {
-            // acessa a função de listar os alunos e armazena o resultado
+            // Chama o método da classe Usuario para listar todos os usuários
             const listaDeUsuarios = await Usuario.listagemUsuario();
 
-            // retorna a lista de alunos há quem fez a requisição web
+            // Envia a lista como resposta com status 200 (OK)
             return res.status(200).json(listaDeUsuarios);
         } catch (error) {
-            // lança uma mensagem de erro no console
+            // Loga erro no console
             console.log('Erro ao acessar listagem de usuario');
 
-            // retorna uma mensagem de erro há quem chamou a mensagem
+            // Retorna erro ao cliente com status 400
             return res.status(400).json({ mensagem: "Não foi possível acessar a listagem de usuario" });
         }
     }
 
     /**
-    * Método controller para cadastrar um novo aluno.
-    * 
-    * Esta função recebe uma requisição HTTP contendo os dados de um aluno no corpo da requisição
-    * e tenta cadastrar este aluno no banco de dados utilizando a função `cadastroAluno`. Caso o cadastro 
-    * seja bem-sucedido, retorna uma resposta HTTP 200 com uma mensagem de sucesso. Caso contrário, retorna
-    * uma resposta HTTP 400 com uma mensagem de erro.
-    * 
-    * @param {Request} req - Objeto de requisição HTTP, contendo o corpo com os dados do aluno no formato `AlunoDTO`.
-    * @param {Response} res - Objeto de resposta HTTP usado para retornar o status e a mensagem ao cliente.
-    * @returns {Promise<Response>} - Retorna uma resposta HTTP com o status 200 em caso de sucesso, ou 400 em caso de erro.
-    * 
-    * @throws {Error} - Se ocorrer um erro durante o processo de cadastro, uma mensagem é exibida no console e uma 
-    *                   resposta HTTP 400 com uma mensagem de erro é enviada ao cliente.
+    * Cadastra um novo usuário no banco de dados.
+    * @param req Requisição HTTP com os dados do usuário no body.
+    * @param res Resposta HTTP para retornar sucesso ou erro.
     */
     static async novo(req: Request, res: Response): Promise<any> {
         try {
-            // recuperando informações do corpo da requisição e colocando em um objeto da interface AlunoDTO
+            // Extrai os dados do corpo da requisição e monta um objeto UsuarioDTO
             const UsuarioRecebido: UsuarioDTO = req.body;
-            console.log(UsuarioRecebido);
+            console.log(UsuarioRecebido); // Debug
 
-
-            // instanciando um objeto do tipo aluno com as informações recebidas
-            const novoUsuario = new Usuario(UsuarioRecebido.nome,
+            // Cria uma nova instância de Usuario com os dados recebidos
+            const novoUsuario = new Usuario(
+                UsuarioRecebido.nome,
                 UsuarioRecebido.email,
                 UsuarioRecebido.celular,
             );
 
-            console.log(Usuario);
+            console.log(Usuario); // Debug
 
-
-            // Chama a função de cadastro passando o objeto como parâmetro
+            // Chama o método de cadastro passando o novo usuário
             const repostaClasse = await Usuario.cadastroUsuario(novoUsuario);
 
-            // verifica a resposta da função
+            // Se cadastrou com sucesso, retorna status 200
             if (repostaClasse) {
-                // retornar uma mensagem de sucesso
                 return res.status(200).json({ mensagem: "Usuario cadastrado com sucesso!" });
             } else {
-                // retorno uma mensagem de erro
-                return res.status(400).json({ mensagem: "Erro ao cadastra o usuario. Entre em contato com o administrador do sistema." })
+                // Caso contrário, retorna erro com status 400
+                return res.status(400).json({ mensagem: "Erro ao cadastra o usuario. Entre em contato com o administrador do sistema." });
             }
         } catch (error) {
-            // lança uma mensagem de erro no console
+            // Loga erro no console
             console.log(`Erro ao cadastrar um usuario. ${error}`);
 
-            // retorna uma mensagem de erro há quem chamou a mensagem
+            // Retorna erro com status 400
             return res.status(400).json({ mensagem: "Não foi possível cadastrar o usuario. Entre em contato com o administrador do sistema." });
         }
     }
 
+    /**
+    * Remove (desativa) um usuário com base no ID recebido como parâmetro.
+    * @param req Requisição HTTP com o idUsuario na URL.
+    * @param res Resposta HTTP para retornar sucesso ou erro.
+    */
     static async remover(req: Request, res: Response): Promise<any> {
         try {
-            // recuperando o id do Aluno que será removido
+            // Converte o idUsuario da URL para número inteiro
             const idUsuario = parseInt(req.params.idUsuario);
 
-            // chamando a função de remoção de Aluno
+            // Chama o método da classe para remover (desativar) o usuário
             const respostaModelo = await Usuario.removerUsuario(idUsuario);
 
-            // verificando a resposta da função
+            // Se a remoção for bem-sucedida
             if (respostaModelo) {
-                // retornar uma mensagem de sucesso
                 return res.status(200).json({ mensagem: "Usuario removido com sucesso!" });
             } else {
-                // retorno uma mensagem de erro
-                return res.status(400).json({ mensagem: "Erro ao remover o usuario. Entre em contato com o administrador do sistema." })
+                return res.status(400).json({ mensagem: "Erro ao remover o usuario. Entre em contato com o administrador do sistema." });
             }
         } catch (error) {
-            // lança uma mensagem de erro no console
+            // Loga erro no console
             console.log(`Erro ao remover um Usuario. ${error}`);
 
-            // retorna uma mensagem de erro há quem chamou a mensagem
+            // Retorna erro com status 400
             return res.status(400).json({ mensagem: "Não foi possível remover o Usuario. Entre em contato com o administrador do sistema." });
         }
     }
+
+    /**
+    * Atualiza os dados de um usuário.
+    * @param req Requisição HTTP com o idUsuario na URL e novos dados no body.
+    * @param res Resposta HTTP com mensagem de sucesso ou erro.
+    */
     static async atualizar(req: Request, res: Response): Promise<any> {
         try {
-            // recuperando o id do Aluno que será atualizado
+            // Pega o id do usuário da URL e transforma em número
             const idUsuario = parseInt(req.params.idUsuario as string);
 
-            // recuperando as informações do Aluno que serão atualizadas
+            // Pega os dados novos do corpo da requisição
             const UsuarioRecebido: UsuarioDTO = req.body;
 
-            // instanciando um objeto do tipo Aluno com as informações recebidas
-            const UsuarioAtualizado = new Usuario(UsuarioRecebido.nome,
+            // Cria um novo objeto Usuario com os dados atualizados
+            const UsuarioAtualizado = new Usuario(
+                UsuarioRecebido.nome,
                 UsuarioRecebido.email,
-                UsuarioRecebido.celular);
+                UsuarioRecebido.celular
+            );
 
-            // setando o id do Aluno que será atualizado
+            // Define o ID que será atualizado
             UsuarioAtualizado.setIdUsuario(idUsuario);
 
-            // chamando a função de atualização de Aluno
+            // Chama o método que faz o update no banco
             const resposta = await Usuario.atualizarUsuario(UsuarioAtualizado);
 
-            // verificando a resposta da função
+            // Verifica se a atualização foi bem-sucedida
             if (resposta) {
-                // retornar uma mensagem de sucesso
                 return res.status(200).json({ mensagem: "Usuario atualizado com sucesso!" });
             } else {
-                // retorno uma mensagem de erro
-                return res.status(400).json({ mensagem: "Erro ao atualizar o usuario. Entre em contato com o administrador do sistema." })
+                return res.status(400).json({ mensagem: "Erro ao atualizar o usuario. Entre em contato com o administrador do sistema." });
             }
         } catch (error) {
-            // lança uma mensagem de erro no console
+            // Loga o erro
             console.log(`Erro ao atualizar um usuario. ${error}`);
 
-            // retorna uma mensagem de erro há quem chamou a mensagem
+            // Retorna erro com status 400
             return res.status(400).json({ mensagem: "Não foi possível atualizar o usuario. Entre em contato com o administrador do sistema." });
         }
     }
