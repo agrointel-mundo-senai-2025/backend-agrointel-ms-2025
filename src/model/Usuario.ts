@@ -187,8 +187,8 @@ export class Usuario {
 
         try {
             // Desativa os registros da tabela ia relacionados ao usuário
-            const queryDeleteIaUsuario = `UPDATE ia
-                                            SET status_ia = FALSE
+            const queryDeleteIaUsuario = `UPDATE chat_ia
+                                            SET status_chat_ia = FALSE
                                             WHERE id_usuario=${id_usuario};`;
 
             // Executa a query

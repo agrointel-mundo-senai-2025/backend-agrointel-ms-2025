@@ -1,9 +1,9 @@
 {
 	"info": {
-		"_postman_id": "66ee1f9f-cd07-4eec-a857-d1f6dcd331ae",
+		"_postman_id": "ea4ef0d4-4a60-4082-bb8d-67ee6df760c5",
 		"name": "MUNDO SENAI",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "38148704"
+		"_exporter_id": "38148719"
 	},
 	"item": [
 		{
@@ -64,7 +64,7 @@
 						"method": "PUT",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3333/delete/usuario/11",
+							"raw": "http://localhost:3333/delete/usuario/3",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -73,7 +73,7 @@
 							"path": [
 								"delete",
 								"usuario",
-								"11"
+								"3"
 							]
 						}
 					},
@@ -104,6 +104,81 @@
 								"atualizar",
 								"usuario",
 								"10"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "CHAT IA",
+			"item": [
+				{
+					"name": "lista chat",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3333/lista/chat",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3333",
+							"path": [
+								"lista",
+								"chat"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "novo chat",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"idUsuario\": 3,\r\n    \"pergunta\": \"A partir de quando começa nosso calendário?\",\r\n    \"resposta\": \"Nosso calendário começa a partir do nascimento de Jesus Cristo, no ano 1 d.C.\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3333/novo/chat",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3333",
+							"path": [
+								"novo",
+								"chat"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete chat",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3333/delete/chat/2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3333",
+							"path": [
+								"delete",
+								"chat",
+								"2"
 							]
 						}
 					},

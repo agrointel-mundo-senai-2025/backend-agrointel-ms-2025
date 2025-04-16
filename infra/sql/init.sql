@@ -1,5 +1,5 @@
 -- Exclui as tabelas caso já existam
-DROP TABLE IF EXISTS ia;
+DROP TABLE IF EXISTS chat_ia;
 DROP TABLE IF EXISTS usuario;
 
 CREATE TABLE usuario (
@@ -11,8 +11,8 @@ CREATE TABLE usuario (
 );
 
 -- Criação da tabela de IA
-CREATE TABLE ia (
-    id_ia SERIAL PRIMARY KEY,
+CREATE TABLE chat_ia (
+    idchat_ia SERIAL PRIMARY KEY,
     id_usuario INT NOT NULL,
     pergunta TEXT,
     resposta TEXT,
@@ -34,7 +34,7 @@ INSERT INTO usuario (nome, email, celular) VALUES
 ('João Pedro', 'joao.pedro@email.com', '11999990010');
 
 -- Inserção de 10 perguntas e respostas relacionadas a cada usuário
-INSERT INTO ia (id_usuario, pergunta, resposta) VALUES
+INSERT INTO chat_ia (id_usuario, pergunta, resposta) VALUES
 (1, 'Qual é a capital do Brasil?', 'A capital do Brasil é Brasília.'),
 (2, 'Como faço uma conexão com banco de dados?', 'Você pode usar a biblioteca psycopg2 para PostgreSQL em Python.'),
 (3, 'Qual a fórmula da água?', 'A fórmula da água é H2O.'),

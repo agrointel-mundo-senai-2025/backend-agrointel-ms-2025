@@ -1,5 +1,6 @@
 import { Request, Response, Router } from "express";
 import {UsuarioController}  from "./controller/UsuarioController";
+import { ChatIAController } from "./controller/ChatIAController";
 
 // Cria um roteador
 const router = Router();
@@ -19,5 +20,12 @@ router.post("/novo/usuario", UsuarioController.novo);
 router.put("/delete/usuario/:idUsuario", UsuarioController.remover);
 // Rota para deletar um usuario
 router.put("/atualizar/usuario/:idUsuario", UsuarioController.atualizar);
+
+// Rota para listar os chat
+router.get("/lista/chat", ChatIAController.todos);
+// Rota para criar um usuario
+router.post("/novo/chat", ChatIAController.novo);
+// Rota para atualizar um usuario
+router.put("/delete/chat/:idChatIA", ChatIAController.remover);
 
 export { router };
