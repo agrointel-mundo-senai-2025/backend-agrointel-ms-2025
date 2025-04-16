@@ -1,0 +1,115 @@
+{
+	"info": {
+		"_postman_id": "66ee1f9f-cd07-4eec-a857-d1f6dcd331ae",
+		"name": "MUNDO SENAI",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "38148704"
+	},
+	"item": [
+		{
+			"name": "USUARIO",
+			"item": [
+				{
+					"name": "lista usuario",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3333/lista/usuarios",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3333",
+							"path": [
+								"lista",
+								"usuarios"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "novo usuario",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nome\": \"maquito\",\r\n    \"email\": \"maquiupere@email.com\",\r\n    \"celular\": \"11999890019\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3333/novo/usuario",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3333",
+							"path": [
+								"novo",
+								"usuario"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete usuario",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3333/delete/usuario/11",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3333",
+							"path": [
+								"delete",
+								"usuario",
+								"11"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "atualiar usuario",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nome\": \"maquito Souza\",\r\n    \"email\": \"maquito@email.com\",\r\n    \"celular\": \"11999990991\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3333/atualizar/usuario/10",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3333",
+							"path": [
+								"atualizar",
+								"usuario",
+								"10"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
