@@ -48,6 +48,7 @@ export class Auth {
                 const usuario = {
                     uuid_usuario: queryResult.rows[0].uuid_usuario,
                     nome: queryResult.rows[0].nome,
+                    email: queryResult.rows[0].email,
                     username: queryResult.rows[0].username
                 }
 
