@@ -1,6 +1,7 @@
 import { Request, Response, Router } from "express";
 import {UsuarioController}  from "./controller/UsuarioController";
 import { ChatIAController } from "./controller/ChatIAController";
+import { Auth } from './auth/Auth';
 
 // Cria um roteador
 const router = Router();
@@ -9,6 +10,8 @@ const router = Router();
 router.get("/", (req: Request, res: Response) => {
     res.json({ mensagem: "Aplicação on-line" });
 });
+
+router.post('/login', Auth.validacaoUsuario);
 
 //ROTAS DOS USUARIO
 
