@@ -2,6 +2,8 @@ import { Request, Response, Router } from "express";
 import {UsuarioController}  from "./controller/UsuarioController";
 import { ChatIAController } from "./controller/ChatIAController";
 import { Auth } from './auth/Auth';
+// import { CulturaController } from "./controller/CulturaController";
+const CulturaController = require("./controller/CulturaController").CulturaController;
 
 // Cria um roteador
 const router = Router();
@@ -30,5 +32,7 @@ router.get("/lista/chat", ChatIAController.todos);
 router.post("/novo/chat", ChatIAController.novo);
 // Rota para atualizar um usuario
 router.put("/delete/chat/:idChatIA", ChatIAController.remover);
+
+router.get('/cultura', CulturaController.todos);
 
 export { router };
