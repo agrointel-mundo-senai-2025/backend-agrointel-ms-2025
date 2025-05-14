@@ -1,0 +1,19 @@
+services:
+  node:
+    container_name: "api-agrointel-senai"
+    restart: always
+    build: .
+    command: "npm run start"
+    working_dir: /home/node/app
+    environment:
+      - NODE_ENV=production
+    expose:
+      - "${SERVER_EXPOSED_PORT}"
+    ports:
+      - "${SERVER_EXPOSED_PORT}:${SERVER_PORT}"
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge

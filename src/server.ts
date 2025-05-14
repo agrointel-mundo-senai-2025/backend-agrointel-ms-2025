@@ -13,4 +13,4 @@ server.use(express.json());
 server.use(router,);
 
 //Exporta o servidor
-export {server};
+export { server };
