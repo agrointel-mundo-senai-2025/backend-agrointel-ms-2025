@@ -160,4 +160,33 @@ export class Cultura {
             return null;
         }
     }
+
+    static async listarCultura(cultura: string): Promise<Cultura | null> {
+        try {
+            const querySelectCultura = `SELECT * FROM exigencias_culturas WHERE planta='${cultura.toUpperCase()}';`;
+            const respostaBD = await database.query(querySelectCultura);
+
+            if (respostaBD.rows.length > 0) {
+                const linha = respostaBD.rows[0];
+                return new Cultura(
+                    linha.id,
+                    linha.planta,
+                    linha.tipo_solo,
+                    linha.ph_ideal_min,
+                    linha.ph_ideal_max,
+                    linha.nutrientes_principais,
+                    linha.retencao_agua,
+                    linha.clima_preferido,
+                    linha.temperatura_ideal_min,
+                    linha.temperatura_ideal_max,
+                    linha.radiacao_solar,
+                    linha.umidade_necessaria
+                );
+            }
+            return null;
+        } catch (error) {
+            console.error(`Erro ao realizar consulta: ${error}`);
+            return null;
+        }
+    }
 }

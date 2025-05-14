@@ -33,6 +33,7 @@ router.post("/novo/chat", ChatIAController.novo);
 // Rota para atualizar um usuario
 router.put("/delete/chat/:idChatIA", ChatIAController.remover);
 
-router.get('/cultura', CulturaController.todos);
+router.get('/lista/culturas', CulturaController.todos);
+router.get('/cultura', CulturaController.cultura);
 
 export { router };
