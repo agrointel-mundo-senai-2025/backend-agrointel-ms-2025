@@ -15,12 +15,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3333/lista/usuarios",
-							"protocol": "http",
+							"raw": "https://backend-agrointel-ms-2025-2.onrender.com/lista/usuarios",
+							"protocol": "https",
 							"host": [
-								"localhost"
+								"backend-agrointel-ms-2025-2",
+								"onrender",
+								"com"
 							],
-							"port": "3333",
 							"path": [
 								"lista",
 								"usuarios"
@@ -44,12 +45,13 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:3333/novo/usuario",
-							"protocol": "http",
+							"raw": "https://backend-agrointel-ms-2025-2.onrender.com/novo/usuario",
+							"protocol": "https",
 							"host": [
-								"localhost"
+								"backend-agrointel-ms-2025-2",
+								"onrender",
+								"com"
 							],
-							"port": "3333",
 							"path": [
 								"novo",
 								"usuario"
@@ -64,12 +66,13 @@
 						"method": "PUT",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3333/delete/usuario/3",
-							"protocol": "http",
+							"raw": "https://backend-agrointel-ms-2025-2.onrender.com/delete/usuario/3",
+							"protocol": "https",
 							"host": [
-								"localhost"
+								"backend-agrointel-ms-2025-2",
+								"onrender",
+								"com"
 							],
-							"port": "3333",
 							"path": [
 								"delete",
 								"usuario",
@@ -94,12 +97,13 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:3333/atualizar/usuario/10",
-							"protocol": "http",
+							"raw": "https://backend-agrointel-ms-2025-2.onrender.com/atualizar/usuario/10",
+							"protocol": "https",
 							"host": [
-								"localhost"
+								"backend-agrointel-ms-2025-2",
+								"onrender",
+								"com"
 							],
-							"port": "3333",
 							"path": [
 								"atualizar",
 								"usuario",
