@@ -22,6 +22,9 @@ export class Usuario {
     // Celular do usuário
     private celular: string;
 
+    // Senha do usuário
+    private senha: string;
+
     // Status do usuário (true = ativo, false = inativo)
     private statusUsuario: boolean = true ;
 
@@ -31,16 +34,19 @@ export class Usuario {
      * @param nome Nome do usuário
      * @param email Email do usuário
      * @param celular Celular do usuário
+     * @param senha Senha do usuário
      */
     constructor(
         nome: string,
         email: string,
-        celular: string
+        celular: string,
+        senha: string // Novo parâmetro adicionado
     ) {
         // Atribui os valores passados para os atributos
         this.nome = nome;
         this.email = email;
         this.celular = celular;
+        this.senha = senha; // Atribui a senha
     }
 
     /* Métodos get e set */
@@ -85,6 +91,16 @@ export class Usuario {
         this.celular = celular;
     }
 
+    // Retorna a senha do usuário
+    public getSenha(): string {
+        return this.senha;
+    }
+
+    // Define uma nova senha para o usuário
+    public setSenha(senha: string): void {
+        this.senha = senha;
+    }
+
     // Retorna o status do usuário (ativo ou inativo)
     public getStatusUsuario(): boolean {
         return this.statusUsuario;
@@ -116,7 +132,8 @@ export class Usuario {
                 const novoUsuario = new Usuario(
                     linha.nome,
                     linha.email,
-                    linha.celular
+                    linha.celular,
+                    linha.senha // Inclui o campo senha
                 );
 
                 // Define o ID e status no objeto
@@ -145,11 +162,12 @@ export class Usuario {
     static async cadastroUsuario(usuario: Usuario): Promise<boolean> {
         try {
             // Monta a query de insert com os dados do objeto
-            const queryInsertUsuario = `INSERT INTO usuario (nome, email, celular)
+            const queryInsertUsuario = `INSERT INTO usuario (nome, email, celular, senha)
                                         VALUES
                                         ('${usuario.getNome()}', 
                                         '${usuario.getEmail()}',
-                                        '${usuario.getCelular()}')
+                                        '${usuario.getCelular()}',
+                                        '${usuario.getSenha()}') // Inclui o campo senha
                                         RETURNING id_usuario;`;
 
             // Mostra a query no console (debug)
@@ -228,7 +246,8 @@ export class Usuario {
             const queryUpdateUsuario = `UPDATE usuario
                                     SET nome = '${usuario.getNome()}', 
                                         email = '${usuario.getEmail()}',
-                                        celular = '${usuario.getCelular()}'
+                                        celular = '${usuario.getCelular()}',
+                                        senha = '${usuario.getSenha()}' // Inclui o campo senha
                                     WHERE id_usuario = ${usuario.getIdUsuario()};`;
 
             // Executa a query
