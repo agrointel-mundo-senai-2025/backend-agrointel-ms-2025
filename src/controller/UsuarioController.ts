@@ -5,8 +5,7 @@ import  {Usuario}  from "../model/Usuario"; // Importa a classe Usuario do model
 interface UsuarioDTO {
     nome: string,
     email: string,
-    celular: string,
-    senha: string // Novo parâmetro adicionado
+    celular: string
 }
 
 /**
@@ -53,7 +52,6 @@ export class UsuarioController extends Usuario {
                 UsuarioRecebido.nome,
                 UsuarioRecebido.email,
                 UsuarioRecebido.celular,
-                UsuarioRecebido.senha // Inclui o campo senha
             );
 
             console.log(Usuario); // Debug
@@ -122,8 +120,7 @@ export class UsuarioController extends Usuario {
             const UsuarioAtualizado = new Usuario(
                 UsuarioRecebido.nome,
                 UsuarioRecebido.email,
-                UsuarioRecebido.celular,
-                UsuarioRecebido.senha // Inclui o campo senha
+                UsuarioRecebido.celular
             );
 
             // Define o ID que será atualizado

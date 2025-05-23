@@ -1,5 +1,4 @@
 import { DatabaseModel } from "./DatabaseModel";
-import crypto from "crypto";
 
 // Cria uma instância da classe DatabaseModel e pega o pool de conexões com o banco
 const database = new DatabaseModel().pool;
@@ -23,9 +22,6 @@ export class Usuario {
     // Celular do usuário
     private celular: string;
 
-    // Senha do usuário
-    private senha: string;
-
     // Status do usuário (true = ativo, false = inativo)
     private statusUsuario: boolean = true ;
 
@@ -35,19 +31,16 @@ export class Usuario {
      * @param nome Nome do usuário
      * @param email Email do usuário
      * @param celular Celular do usuário
-     * @param senha Senha do usuário
      */
     constructor(
         nome: string,
         email: string,
-        celular: string,
-        senha: string // Novo parâmetro adicionado
+        celular: string
     ) {
         // Atribui os valores passados para os atributos
         this.nome = nome;
         this.email = email;
         this.celular = celular;
-        this.senha = senha; // Atribui a senha
     }
 
     /* Métodos get e set */
@@ -92,16 +85,6 @@ export class Usuario {
         this.celular = celular;
     }
 
-    // Retorna a senha do usuário
-    public getSenha(): string {
-        return this.senha;
-    }
-
-    // Define uma nova senha para o usuário
-    public setSenha(senha: string): void {
-        this.senha = senha;
-    }
-
     // Retorna o status do usuário (ativo ou inativo)
     public getStatusUsuario(): boolean {
         return this.statusUsuario;
@@ -133,8 +116,7 @@ export class Usuario {
                 const novoUsuario = new Usuario(
                     linha.nome,
                     linha.email,
-                    linha.celular,
-                    linha.senha // Inclui o campo senha
+                    linha.celular
                 );
 
                 // Define o ID e status no objeto
@@ -162,16 +144,12 @@ export class Usuario {
      */
     static async cadastroUsuario(usuario: Usuario): Promise<boolean> {
         try {
-            // Criptografa a senha antes de salvar no banco
-            const senhaCriptografada = crypto.createHash('sha1').update(usuario.getSenha()).digest('hex');
-
             // Monta a query de insert com os dados do objeto
-            const queryInsertUsuario = `INSERT INTO usuario (nome, email, celular, senha)
+            const queryInsertUsuario = `INSERT INTO usuario (nome, email, celular)
                                         VALUES
                                         ('${usuario.getNome()}', 
                                         '${usuario.getEmail()}',
-                                        '${usuario.getCelular()}',
-                                        '${senhaCriptografada}') 
+                                        '${usuario.getCelular()}')
                                         RETURNING id_usuario;`;
 
             // Mostra a query no console (debug)
@@ -182,7 +160,7 @@ export class Usuario {
 
             // Se conseguiu inserir, rowCount vai ser diferente de 0
             if (respostaBD.rowCount != 0) {
-                console.log(`Usuario cadastrado com sucesso! ID do usuario: ${respostaBD.rows[0].id_usuario}`);
+                console.log(`Aluno cadastrado com sucesso! ID do usuario: ${respostaBD.rows[0].id_usuario}`);
                 return true;
             }
 
@@ -250,8 +228,7 @@ export class Usuario {
             const queryUpdateUsuario = `UPDATE usuario
                                     SET nome = '${usuario.getNome()}', 
                                         email = '${usuario.getEmail()}',
-                                        celular = '${usuario.getCelular()}',
-                                        senha = '${usuario.getSenha()}' // Inclui o campo senha
+                                        celular = '${usuario.getCelular()}'
                                     WHERE id_usuario = ${usuario.getIdUsuario()};`;
 
             // Executa a query
