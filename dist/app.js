@@ -8,7 +8,7 @@ new DatabaseModel_1.DatabaseModel().testeConexao().then((resdb) => {
         console.log('Conexão com banco de dados realizada com sucesso.');
         // iniciando o servidor
         server_1.server.listen(port, () => {
-            console.log(`Servidor iniciado no endereço http://localhost:${process.env.SERVER_EXPOSED_PORT}`);
+            console.log(`Servidor iniciado no endereço https://backend-agrointel-ms-2025-177s.onrender.com`);
         });
     }
     else {
