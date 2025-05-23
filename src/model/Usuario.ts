@@ -1,4 +1,5 @@
 import { DatabaseModel } from "./DatabaseModel";
+import crypto from "crypto";
 
 // Cria uma instância da classe DatabaseModel e pega o pool de conexões com o banco
 const database = new DatabaseModel().pool;
@@ -161,13 +162,16 @@ export class Usuario {
      */
     static async cadastroUsuario(usuario: Usuario): Promise<boolean> {
         try {
+            // Criptografa a senha antes de salvar no banco
+            const senhaCriptografada = crypto.createHash('sha1').update(usuario.getSenha()).digest('hex');
+
             // Monta a query de insert com os dados do objeto
             const queryInsertUsuario = `INSERT INTO usuario (nome, email, celular, senha)
                                         VALUES
                                         ('${usuario.getNome()}', 
                                         '${usuario.getEmail()}',
                                         '${usuario.getCelular()}',
-                                        '${usuario.getSenha()}') // Inclui o campo senha
+                                        '${senhaCriptografada}') 
                                         RETURNING id_usuario;`;
 
             // Mostra a query no console (debug)
@@ -178,7 +182,7 @@ export class Usuario {
 
             // Se conseguiu inserir, rowCount vai ser diferente de 0
             if (respostaBD.rowCount != 0) {
-                console.log(`Aluno cadastrado com sucesso! ID do usuario: ${respostaBD.rows[0].id_usuario}`);
+                console.log(`Usuario cadastrado com sucesso! ID do usuario: ${respostaBD.rows[0].id_usuario}`);
                 return true;
             }
 
