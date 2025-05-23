@@ -5,9 +5,11 @@
   "directories": {
     "doc": "docs"
   },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "npx tsc && node ./dist/app.js"
+ "scripts": {
+    "start": "node dist/app.js",
+    "build": "tsc",
+    "dev": "nodemon --watch src --exec ts-node src/app.ts",
+    "test": "echo \"No tests yet\""
   },
   "keywords": [],
   "author": "Mundo Senai",
